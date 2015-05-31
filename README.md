@@ -115,6 +115,10 @@ default browser.
    is `man`. For completeness this should be included. I could not find an
    easy way to do this.
 
+## See also
+
+[Vim documentation for Dokumentary](http://vim-doc.herokuapp.com/view?https://raw.githubusercontent.com/gastonsimone/vim-dokumentary/master/doc/dokumentary.txt)
+
 # License
 
 Distributed under the same terms as Vim itself. See `:help license`.
