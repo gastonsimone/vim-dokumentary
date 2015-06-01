@@ -27,34 +27,25 @@ endfunction " }}}1
 " Define a system dictionary as the default search {{{1
 function! s:dict(visual)
 	let l:keyword = shellescape(s:get_keyword(a:visual))
-	let l:dictprg = ''
 	if has('mac')
 		" Use Mac OS X Dictionary app for keyword search by default
-		let l:dictprg = 'open dict://'
+		silent let l:dokumentary_null = system('open dict://' . l:keyword)
 	elseif has('unix')
 		" Use command-line dictionary tools if available
 		if len(system('which dict')) > 0
-			let l:dictprg = 'dict '
+			call s:output_to_window(l:keyword, a:visual, 1, "dict")
 		elseif len(system('which sdvc')) > 0
-			let l:dictprg = 'sdvc '
+			call s:output_to_window(l:keyword, a:visual, 1, "sdvc")
+		else
+			echo "No dictionary program found."
 		endif
-	endif
-
-	if len(l:dictprg) > 0 && len(l:keyword) > 0
-		silent let l:dokumentary_null = system(l:dictprg . l:keyword)
 	else
-		echo "No dictionary program found."
+		echo "Dokumentary: Dictionary only supported on mac and unix."
 	endif
 endfunction
 
 nnoremap <silent> K :call <SID>dict(0)<CR>
 vnoremap <silent> K :call <SID>dict(1)<CR>
-"
-" augroup dokumentary_dict
-" 	au!
-" 	autocmd BufEnter <buffer> if &ft == '' | nnoremap <silent> <buffer> K :call <SID>dict(0)<CR>| endif
-" 	autocmd BufEnter <buffer> if &ft == '' | vnoremap <silent> <buffer> K :call <SID>dict(1)<CR>| endif
-" augroup END
 
 " }}}1
 
@@ -73,6 +64,8 @@ let g:dokumentary_docprgs["go"]       = "godoc {0}"
 let g:dokumentary_docprgs["perl"]     = "perldoc -f {0}"
 let g:dokumentary_docprgs["plaintex"] = "texdoc -I -M -q {0}"
 let g:dokumentary_docprgs["tex"]      = "texdoc -I -M -q {0}"
+let g:dokumentary_docprgs["dict"]     = "dict {0}"
+let g:dokumentary_docprgs["sdvc"]     = "sdvc {0}"
 
 " }}}1
 
