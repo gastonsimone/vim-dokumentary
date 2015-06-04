@@ -13,8 +13,8 @@ This presents two problems:
 
 1. The `man` command is the right choice only if you are writing a shell
    script or C code.
-2. Vim only runs that command and wait for it to finish to continue using
-   Vim, which sometimes it is not the ideal, because you would like to see
+2. Vim only runs that command and waits for it to finish to continue using
+   Vim, which sometimes is not the ideal, because you would like to see
    that documentation at the same time you are editing your file.
 
 Dokumentary solves these two issues by doing the following:
@@ -89,6 +89,42 @@ The result may be unexpected in some cases.
 
 ## Configuration
 
+### Dictionary
+
+As said before, the documentation program on normal files is a dictionary.
+For Mac OS X users this is quite transparent, because Dokumentary uses the
+Dictionary application provided with the OS.
+
+But for GNU/Linux users, this needs some additional work. For example, in a
+Debian-based system you can install the following three packages:
+
+```
+apt-get install dictd dict-gcide dict
+```
+
+This will install the Comprehensive English Dictionary, which can be queried
+with the `dict` command. You can also install other dictionaries if you like.
+
+If present in the system, Dokumentary will use `dict` and will search on all
+the available dictionaries at once. See the next section to know how to
+change this.
+
+### Documentation commands
+
+Dokumentary keeps a table of the documentation programs to use in the global
+variable `g:dokumentary_docprgs`, which is a vimscript dictionary. The key is
+the filetype under which that documentation program is run, except for the
+special cases of `man`, `dict` and `sdvc`. The value is the command to execute,
+where the substring `{0}` will be substituted by the keyword to search.
+For example, try:
+
+```
+echo g:dokumentary_docprgs["c"]
+```
+
+in ex mode to see which command will be used to get documentation on a file of
+`c` type.
+
 ### man2html
 
 Dokumentary understands the global, boolean variable `g:dokumentary_man2html`.
@@ -100,16 +136,36 @@ in the system's default browser. By default this variable is undefined.
 Mac OS X does. This is the method used to open the temporary HTML file in the
 default browser.
 
+## Installation
+
+### Using Pathogen
+
+Everybody knows the great [pathogen.vim](https://github.com/tpope/vim-pathogen)
+plugin. Simply execute these commands in your command prompt:
+
+    cd ~/.vim/bundle
+    git clone git://github.com/gastonsimone/vim-dokumentary.git
+
+Once help tags have been generated, you can view the manual with
+`:help dokumentary`.
+
+### Using Vundle
+
+I am a [Vundle](https://github.com/gmarik/Vundle.vim) user. Just
+add this line
+
+    Plugin 'gastonsimone/vim-dokumentary'
+
+to your `.vimrc` file, reload it and do the Vundle magic by running
+`:PluginInstall`.
+
 ## TO DO
 
 1. Simplify the process of adding more supported file types.
    It would be easier if `autocmd` allowed to define the pattern from
    a variable.
-2. Add public commands so the user can add support for more file types.
-   Something like:
-   ```
-   Dok[ument] c "mycdoc -s {0}"
-   ```
+2. Add public commands so the user can add support for more file types.<br>
+   Something like: `:Dok[ument] c "mycdoc -s {0}"`
 3. Vim's standard `K` command supports a count before `K` to specify the
    specific manual page to show when the documentation program being used
    is `man`. For completeness this should be included. I could not find an
