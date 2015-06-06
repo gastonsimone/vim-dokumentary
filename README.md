@@ -159,6 +159,11 @@ add this line
 to your `.vimrc` file, reload it and do the Vundle magic by running
 `:PluginInstall`.
 
+### From Vimball
+
+Download the vimball from the [vim scripts page](http://www.vim.org/scripts/script.php?script_id=5197)
+and follow the instructions provided there.
+
 ## TO DO
 
 1. Simplify the process of adding more supported file types.
