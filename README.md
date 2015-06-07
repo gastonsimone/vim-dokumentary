@@ -109,6 +109,20 @@ If present in the system, Dokumentary will use `dict` and will search on all
 the available dictionaries at once. See the next section to know how to
 change this.
 
+### Documentation window location
+
+The location of the documentation window can be customized by changing the
+`g:dokumentary_open` variable. This variable contains the `ex`-mode command
+that will be executed to create a new window for documentation. The default
+value is
+
+```
+rightbelow 84vnew
+```
+
+See the documentation for `rightbelow` and `vnew` to understand what this
+command does and how to change it to your own preferences.
+
 ### Documentation commands
 
 Dokumentary keeps a table of the documentation programs to use in the global

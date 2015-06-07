@@ -6,6 +6,10 @@ if exists("g:loaded_dokumentary") || &cp
 endif
 let g:loaded_dokumentary = 1
 
+" Configuration {{{1
+let g:dokumentary_open = 'rightbelow 84vnew'
+" }}}1
+
 " Auxiliary functions {{{1
 function! s:get_selected_text()
 	let l:aux = @z
@@ -80,7 +84,11 @@ function! s:output_to_window(given_keyword, visual, newwindow, type) " {{{1
 
 	if !empty(l:keyword) && executable(split(l:prg)[0])
 		if a:newwindow
-			botright new
+			if exists('g:dokumentary_open') && !empty(g:dokumentary_open)
+				execute g:dokumentary_open
+			else
+				rightbelow 84vnew
+			endif
 			setlocal buftype=nofile
 			set bufhidden=delete
 		else
