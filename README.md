@@ -68,7 +68,7 @@ previous documentation page.
 
 ### Man as documentation program
 
-When using "`man`" as the documentation program, Dokumentary understands section
+When using `man` as the documentation program, Dokumentary understands section
 references. For example, if the cursor is over
 
 ```
@@ -117,7 +117,7 @@ that will be executed to create a new window for documentation. The default
 value is
 
 ```
-rightbelow 84vnew
+rightbelow vnew
 ```
 
 See the documentation for `rightbelow` and `vnew` to understand what this

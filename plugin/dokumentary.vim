@@ -7,7 +7,9 @@ endif
 let g:loaded_dokumentary = 1
 
 " Configuration {{{1
-let g:dokumentary_open = 'rightbelow 84vnew'
+if !exists('g:dokumentary_open')
+	let g:dokumentary_open = 'rightbelow vnew'
+endif
 " }}}1
 
 " Auxiliary functions {{{1
@@ -56,20 +58,26 @@ vnoremap <silent> K :call <SID>dict(1)<CR>
 " External documentation programs {{{1
 
 " Key: filetype, Value: command
-let g:dokumentary_docprgs = {}
-let g:dokumentary_docprgs["man"]      = "man {0} | col -b"
-let g:dokumentary_docprgs["c"]        = "man {0} | col -b"
-let g:dokumentary_docprgs["cpp"]      = "man {0} | col -b"
-let g:dokumentary_docprgs["make"]     = "man {0} | col -b"
-let g:dokumentary_docprgs["yacc"]     = "man {0} | col -b"
-let g:dokumentary_docprgs["sh"]       = "man {0} | col -b"
-let g:dokumentary_docprgs["python"]   = "pydoc {0}"
-let g:dokumentary_docprgs["go"]       = "godoc {0}"
-let g:dokumentary_docprgs["perl"]     = "perldoc -f {0}"
-let g:dokumentary_docprgs["plaintex"] = "texdoc -I -M -q {0}"
-let g:dokumentary_docprgs["tex"]      = "texdoc -I -M -q {0}"
-let g:dokumentary_docprgs["dict"]     = "dict {0}"
-let g:dokumentary_docprgs["sdvc"]     = "sdvc {0}"
+let s:default_dokumentary_docprgs = {}
+let s:default_dokumentary_docprgs["man"]      = "man {0} | col -b"
+let s:default_dokumentary_docprgs["c"]        = "man {0} | col -b"
+let s:default_dokumentary_docprgs["cpp"]      = "man {0} | col -b"
+let s:default_dokumentary_docprgs["make"]     = "man {0} | col -b"
+let s:default_dokumentary_docprgs["yacc"]     = "man {0} | col -b"
+let s:default_dokumentary_docprgs["sh"]       = "man {0} | col -b"
+let s:default_dokumentary_docprgs["python"]   = "pydoc {0}"
+let s:default_dokumentary_docprgs["go"]       = "godoc {0}"
+let s:default_dokumentary_docprgs["perl"]     = "perldoc -f {0}"
+let s:default_dokumentary_docprgs["plaintex"] = "texdoc -I -M -q {0}"
+let s:default_dokumentary_docprgs["tex"]      = "texdoc -I -M -q {0}"
+let s:default_dokumentary_docprgs["dict"]     = "dict {0}"
+let s:default_dokumentary_docprgs["sdvc"]     = "sdvc {0}"
+
+if !exists('g:dokumentary_docprgs')
+	let g:dokumentary_docprgs = {}
+endif
+
+call extend(g:dokumentary_docprgs, s:default_dokumentary_docprgs, "keep")
 
 " }}}1
 
