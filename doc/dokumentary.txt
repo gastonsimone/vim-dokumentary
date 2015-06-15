@@ -88,9 +88,9 @@ Man as documentation program                              *dokumentary-man*
 
 When using "man" as the documentation program, Dokumentary understands section
 references. For example, if the cursor is over
-
+>
     printf(3)
-
+<
 and you press "K" in |Normal| mode, Dokumentary will load the documentation
 for printf under section 3.
 
@@ -114,9 +114,9 @@ Dictionary application provided with the OS.
 
 But for GNU/Linux users, this needs some additional work. For example, in a
 Debian-based system you can install the following three packages:
-
+>
     apt-get install dictd dict-gcide dict
-
+<
 This will install the Comprehensive English Dictionary, which can be queried
 with the "dict" command. You can also install other dictionaries if you like.
 
@@ -146,9 +146,9 @@ the filetype under which that documentation program is run, except for the
 special cases of "man", "dict" and "sdvc". The value is the command to execute,
 where the substring '{0}' will be substituted by the keyword to search.
 For example, try:
-
+>
     echo g:dokumentary_docprgs["c"]
-
+<
 in |ex| mode to see which command will be used to get documentation on a file
 of "c" type.
 
@@ -157,9 +157,9 @@ Customizing commands                       *dokumentary-custom-commands*
 Therefore, you can use 'g:dokumentary_docprgs' to customize which command to
 use for each file type, or even adding support for more file types. For
 example, you can add this in your |vimrc| file:
-
+>
     let g:dokumentary_docprgs = {'c': 'cdoc {0}', 'python': ''}
-
+<
 This will change the command to use to get documentation on c-type files to
 a command called "cdoc", and it will also turn the special mapping for |K| off
 on python-type files (it will use the dictionary, if found).
@@ -180,8 +180,9 @@ the documentation support for any file type with a sinple interface.
                            Cleans the previous auto commands for the |K|
                            mappings and substitutes them with new ones.
                            Updates 'g:dokumentary_docprgs' accordingly.
-                           Example:
+                           Example: >
            :Dokument c cdoc\ {0}
+<
                            Note: it is not possible to use this command
                            from the |vimrc| file yet. You need to update
                            'g:dokumentary_docprgs' and Dokumentary will
