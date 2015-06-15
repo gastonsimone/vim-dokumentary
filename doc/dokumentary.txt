@@ -131,9 +131,9 @@ The location of the documentation window can be customized by changing the
 'g:dokumentary_open' variable. This variable contains the |ex|-mode command
 that will be executed to create a new window for documentation. The default
 value is
-
+>
     rightbelow vnew
-
+<
 See the documentation for |rightbelow| and |vnew| to understand what this
 command does and how to change it to your own preferences.
 
@@ -174,7 +174,7 @@ The Dokument command                               *dokumentary-dokument*
 The |Dokument| command encapsulates all the necessary work to add or update
 the documentation support for any file type with a sinple interface.
 
-                                                    *dokument* *Dokument*
+                                                              *:Dokument*
 :Dokument {ftype} {prg}    Sets {prg} as the documentation command to use
                            on files of type {ftype}.
                            Cleans the previous auto commands for the |K|
@@ -202,7 +202,7 @@ default browser.
 =============================================================================
 6. TO DO                                               *dokumentary-todo*
 
-    1. Make it possible to use |Dokument| from |vimrc|.
+    1. Make it possible to use |:Dokument| from |vimrc|.
     2. Vim's standard |K| command supports a count before "K" to specify the
        specific manual page to show when the documentation program being used
        is "man". For completeness this should be included. I could not find an
