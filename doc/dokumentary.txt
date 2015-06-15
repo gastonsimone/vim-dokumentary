@@ -71,20 +71,20 @@ Dokumentary only maps K in |Normal| and |Visual| modes.
 =============================================================================
 4. BEHAVIOR                                          *dokumentary-behavior*
 
-                                                      *dokumentary-windows*
+Windows                                               *dokumentary-windows*
 
 As described in the introduction, Dokumentary shows the documentation in a Vim
 |window|. This window has 'buftype'=nofile and 'bufhidden'=delete.
 
-This special buffer also gets mappings for K, so it is very simple to
+This special buffer also gets mappings for |K|, so it is very simple to
 "navigate" through the documentation by pressing "K" in it. Every word becomes
 a potential link!
 
-As a side effect of how Dokumentary is implemented, pressing "u" in normal
+As a side effect of how Dokumentary is implemented, pressing |u| in normal
 mode (|undo|) in one of these buffers behaves like "going back" to the
 previous documentation page.
 
-                                                          *dokumentary-man*
+Man as documentation program                              *dokumentary-man*
 
 When using "man" as the documentation program, Dokumentary understands section
 references. For example, if the cursor is over
@@ -94,9 +94,9 @@ references. For example, if the cursor is over
 and you press "K" in |Normal| mode, Dokumentary will load the documentation
 for printf under section 3.
 
-                                                       *dokumentary-visual*
+Visual mode                                            *dokumentary-visual*
 
-You can select more than one word in |Visual| mode and press "K". Dokumentary
+You can select more than one word in |Visual| mode and press |K|. Dokumentary
 will use all the selected text as the keyword for the corresponding
 documentation program.
 
@@ -137,6 +137,7 @@ value is
 See the documentation for |rightbelow| and |vnew| to understand what this
 command does and how to change it to your own preferences.
 
+                                                    *dokumentary_docprgs*
 Documentation commands                         *dokumentary-cfg-commands*
 
 Dokumentary keeps a table of the documentation programs to use in the global
@@ -151,6 +152,41 @@ For example, try:
 in |ex| mode to see which command will be used to get documentation on a file
 of "c" type.
 
+Customizing commands                       *dokumentary-custom-commands*
+
+Therefore, you can use 'g:dokumentary_docprgs' to customize which command to
+use for each file type, or even adding support for more file types. For
+example, you can add this in your |vimrc| file:
+
+    let g:dokumentary_docprgs = {'c': 'cdoc {0}', 'python': ''}
+
+This will change the command to use to get documentation on c-type files to
+a command called "cdoc", and it will also turn the special mapping for |K| off
+on python-type files (it will use the dictionary, if found).
+
+You do not need to specify all the file types, but just those you want to
+customize. Dokumentary will add all the supported file types with their
+default commands automatically.
+
+                    
+The Dokument command                               *dokumentary-dokument*
+
+The |Dokument| command encapsulates all the necessary work to add or update
+the documentation support for any file type with a sinple interface.
+
+                                                    *dokument* *Dokument*
+:Dokument {ftype} {prg}    Sets {prg} as the documentation command to use
+                           on files of type {ftype}.
+                           Cleans the previous auto commands for the |K|
+                           mappings and substitutes them with new ones.
+                           Updates 'g:dokumentary_docprgs' accordingly.
+                           Example:
+           :Dokument c cdoc\ {0}
+                           Note: it is not possible to use this command
+                           from the |vimrc| file yet. You need to update
+                           'g:dokumentary_docprgs' and Dokumentary will
+                           take care of running "Dokument" for you.
+
 man2html                                         *g:dokumentary_man2html*
 
 Dokumentary understands the global, boolean variable 'g:dokumentary_man2html'.
@@ -158,20 +194,15 @@ When it is set to true and the command "man2html" is available in the system,
 it will redirect the man output to a temporary file in HTML format and open it
 in the system's default browser. By default this variable is undefined.
 
-NOTE: The underlying system must support the "open" command in the same way
+Note: The underlying system must support the "open" command in the same way
 Mac OS X does. This is the method used to open the temporary HTML file in the
 default browser.
 
 =============================================================================
 6. TO DO                                               *dokumentary-todo*
 
-    1. Simplify the process of adding more supported file types.
-       It would be easier if |autocmd| allowed to define the pattern from
-       a variable.
-    2. Add public commands so the user can add support for more file types.
-       Something like:
-           :Dok[ument] c "mycdoc -s {0}"
-    3. Vim's standard |K| command supports a count before "K" to specify the
+    1. Make it possible to use |Dokument| from |vimrc|.
+    2. Vim's standard |K| command supports a count before "K" to specify the
        specific manual page to show when the documentation program being used
        is "man". For completeness this should be included. I could not find an
        easy way to do this.

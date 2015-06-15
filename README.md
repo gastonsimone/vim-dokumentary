@@ -139,6 +139,46 @@ echo g:dokumentary_docprgs["c"]
 in ex mode to see which command will be used to get documentation on a file of
 `c` type.
 
+#### Customizing commands
+
+Therefore, you can use `g:dokumentary_docprgs` to customize which command to
+use for each file type, or even adding support for more file types. For
+example, you can add this in your `vimrc` file:
+
+```
+let g:dokumentary_docprgs = {'c': 'cdoc {0}', 'python': ''}
+```
+
+This will change the command to use to get documentation on c-type files to
+a command called `cdoc`, and it will also turn the special mapping for `K` off
+on python-type files (it will use the dictionary, if found).
+
+You do not need to specify all the file types, but just those you want to
+customize. Dokumentary will add all the supported file types with their
+default commands automatically.
+
+#### The Dokument command
+
+The `Dokument` command encapsulates all the necessary work to add or update
+the documentation support for any file type with a sinple interface.
+
+```
+:Dokument {ftype} {prg}
+```
+
+Sets `{prg}` as the documentation command to use on files of type `{ftype}`.
+Cleans the previous auto commands for the `K` mappings and substitutes them
+with new ones. Updates `g:dokumentary_docprgs` accordingly.
+
+Example:
+```
+:Dokument c cdoc\ {0}
+```
+
+**Note:** it is not possible to use this command from the `vimrc` file yet.
+You need to update `g:dokumentary_docprgs` and Dokumentary will take care
+running `Dokument` for you.
+
 ### man2html
 
 Dokumentary understands the global, boolean variable `g:dokumentary_man2html`.
@@ -146,7 +186,7 @@ When it is set to true and the command `man2html` is available in the system,
 it will redirect the man output to a temporary file in HTML format and open it
 in the system's default browser. By default this variable is undefined.
 
-**NOTE:** The underlying system must support the `open` command in the same way
+**Note:** The underlying system must support the `open` command in the same way
 Mac OS X does. This is the method used to open the temporary HTML file in the
 default browser.
 
@@ -180,12 +220,8 @@ and follow the instructions provided there.
 
 ## TO DO
 
-1. Simplify the process of adding more supported file types.
-   It would be easier if `autocmd` allowed to define the pattern from
-   a variable.
-2. Add public commands so the user can add support for more file types.<br>
-   Something like: `:Dok[ument] c "mycdoc -s {0}"`
-3. Vim's standard `K` command supports a count before `K` to specify the
+1. Make it possible to use `Dokument` from `vimrc`.
+2. Vim's standard `K` command supports a count before `K` to specify the
    specific manual page to show when the documentation program being used
    is `man`. For completeness this should be included. I could not find an
    easy way to do this.
