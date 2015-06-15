@@ -144,62 +144,38 @@ function! s:open_man_page(visual, newwindow) " {{{1
 	endif
 endfunction " }}}1
 
+function! s:add_doc_prg(ftype, prg) " {{{1
+	if a:prg == "''"
+		let l:prg = ''
+	else
+		let l:prg = a:prg
+	endif
+	let g:dokumentary_docprgs[a:ftype] = l:prg
+	execute 'augroup dokumentary_' . a:ftype
+	au!
+	if !empty(l:prg)
+		if l:prg =~# '^man '
+			execute 'autocmd FileType ' . a:ftype . ' nnoremap <silent> <buffer> K :call <SID>open_man_page(0, 1)<CR>'
+			execute 'autocmd FileType ' . a:ftype . ' vnoremap <silent> <buffer> K :call <SID>open_man_page(1, 1)<CR>'
+		else
+			execute 'autocmd FileType ' . a:ftype . ' nnoremap <silent> <buffer> K :call <SID>output_to_window("", 0, 1, "' . a:ftype . '")<CR>'
+			execute 'autocmd FileType ' . a:ftype . ' vnoremap <silent> <buffer> K :call <SID>output_to_window("", 1, 1, "' . a:ftype . '")<CR>'
+		endif
+	endif
+	augroup END
+endfunction " }}}1
+
+" Public commands {{{1
+command! -nargs=+ Dokument call <SID>add_doc_prg(<f-args>)
+" }}}1
+
 " Mappings for each file type {{{1
 
-augroup dokumentary_c
-	au!
-	autocmd FileType c nnoremap <silent> <buffer> K :call <SID>open_man_page(0, 1)<CR>
-	autocmd FileType c vnoremap <silent> <buffer> K :call <SID>open_man_page(1, 1)<CR>
-augroup END
+for [ftype, prg] in items(g:dokumentary_docprgs)
+	execute 'Dokument ' . ftype . ' ' . escape(prg, ' \')
+endfor
 
-augroup dokumentary_cpp
-	au!
-	autocmd FileType cpp nnoremap <silent> <buffer> K :call <SID>open_man_page(0, 1)<CR>
-	autocmd FileType cpp vnoremap <silent> <buffer> K :call <SID>open_man_page(1, 1)<CR>
-augroup END
-
-augroup dokumentary_make
-	au!
-	autocmd FileType make nnoremap <silent> <buffer> K :call <SID>open_man_page(0, 1)<CR>
-	autocmd FileType make vnoremap <silent> <buffer> K :call <SID>open_man_page(1, 1)<CR>
-augroup END
-
-augroup dokumentary_sh
-	au!
-	autocmd FileType sh nnoremap <silent> <buffer> K :call <SID>open_man_page(0, 1)<CR>
-	autocmd FileType sh vnoremap <silent> <buffer> K :call <SID>open_man_page(1, 1)<CR>
-augroup END
-
-augroup dokumentary_python
-	au!
-	autocmd FileType python nnoremap <silent> <buffer> K :call <SID>output_to_window('', 0, 1, "python")<CR>
-	autocmd FileType python vnoremap <silent> <buffer> K :call <SID>output_to_window('', 1, 1, "python")<CR>
-augroup END
-
-augroup dokumentary_go
-	au!
-	autocmd FileType go nnoremap <silent> <buffer> K :call <SID>output_to_window('', 0, 1, "go")<CR>
-	autocmd FileType go vnoremap <silent> <buffer> K :call <SID>output_to_window('', 1, 1, "go")<CR>
-augroup END
-
-augroup dokumentary_perl
-	au!
-	autocmd FileType perl nnoremap <silent> <buffer> K :call <SID>output_to_window('', 0, 1, "perl")<CR>
-	autocmd FileType perl vnoremap <silent> <buffer> K :call <SID>output_to_window('', 1, 1, "perl")<CR>
-augroup END
-
-augroup dokumentary_plaintex
-	au!
-	autocmd FileType plaintex nnoremap <silent> <buffer> K :call <SID>output_to_window('', 0, 1, "plaintex")<CR>
-	autocmd FileType plaintex vnoremap <silent> <buffer> K :call <SID>output_to_window('', 1, 1, "plaintex")<CR>
-augroup END
-
-augroup dokumentary_tex
-	au!
-	autocmd FileType tex nnoremap <silent> <buffer> K :call <SID>output_to_window('', 0, 1, "tex")<CR>
-	autocmd FileType tex vnoremap <silent> <buffer> K :call <SID>output_to_window('', 1, 1, "tex")<CR>
-augroup END
-
+" Special case for vim help
 augroup dokumentary_vim
 	au!
 	autocmd FileType vim  nnoremap <silent> <buffer> K :execute ":help " . expand("<cword>")<CR>
