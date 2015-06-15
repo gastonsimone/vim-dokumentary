@@ -172,7 +172,9 @@ command! -nargs=+ Dokument call <SID>add_doc_prg(<f-args>)
 " Mappings for each file type {{{1
 
 for [ftype, prg] in items(g:dokumentary_docprgs)
-	execute 'Dokument ' . ftype . ' ' . escape(prg, ' \')
+	if !empty(prg)
+		execute 'Dokument ' . ftype . ' ' . escape(prg, ' \')
+	endif
 endfor
 
 " Special case for vim help
