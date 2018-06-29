@@ -123,7 +123,7 @@ function! s:open_man_page(visual, newwindow) " {{{1
 	let l:expr = s:get_keyword(a:visual)
 
 	" Matches man-page reference. Example: printf(3)
-	let l:mansectionpattern = '\([a-zA-Z0-9_\-./]\+\)\((\([1-8]\))\)\?\([.,:;]\)\?'
+	let l:mansectionpattern = '\([a-zA-Z0-9_\-.:/]\+\)\((\([1-8]\))\)\?\([.,:;]\)\?'
 
 	if match(l:expr, l:mansectionpattern) >= 0
 		let l:name = substitute(l:expr, l:mansectionpattern, "\\1", "")
